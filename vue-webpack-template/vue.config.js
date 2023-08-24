@@ -25,11 +25,19 @@ module.exports = defineConfig({
     module: {
       rules: [
         {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
+        },
+        {
           test: /\.less$/,
           loader: 'less-loader',
           options: {
             javascriptEnabled: true,
           },
+        },
+        {
+          test: /.ts$/,
+          use: ['ts-loader'],
         },
       ],
     },
@@ -37,6 +45,7 @@ module.exports = defineConfig({
       alias: {
         '@': resolve(__dirname, 'src'),
       },
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     },
     // 代码分割
     optimization: {
