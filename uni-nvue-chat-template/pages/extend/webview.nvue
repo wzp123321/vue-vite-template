@@ -1,0 +1,56 @@
+<template>
+	<view>
+		<uni-nav-bar :leftIconBool="true" @clickLeft="back()" left-icon="back" :fixed="true" :status-bar="true" :title="title"
+		 :moveRightBtn="isWxapp" background-color="#e3e3e3" :rightIconBool="true"></uni-nav-bar>
+	</view>
+</template>
+
+<script>
+	var w = null;
+	var ws = null;
+	export default {
+		data() {
+			return {
+				title: '',
+				url: ''
+			}
+		},
+		onLoad(option) {
+			this.url = option.url;
+		},
+		onReady() {
+			var that = this;
+			setTimeout(function() {
+				ws = plus.webview.currentWebview();
+				w = plus.webview.create(that.url, 'id', {
+					top: uni.getSystemInfoSync().statusBarHeight + 44,
+					height: uni.getSystemInfoSync().windowHeight - 44,
+				});
+				ws.setStyle({scalable:true})  
+				w.show();
+				w.onloaded = function() {
+					that.title = w.getTitle();
+				}; 
+				uni.hideLoading();
+			}, 100)
+		},
+		methods: {
+			back() {
+				w.canBack(function(e) {
+					if(e.canBack){
+						w.back();
+					}else{
+						w.close();
+						uni.navigateBack({
+							delta:1
+						})
+					}
+				});
+			},
+		}
+	}
+</script>
+
+<style>
+
+</style>
