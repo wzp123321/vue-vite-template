@@ -1,14 +1,9 @@
 <template>
   <h1>11</h1>
 </template>
+<script lang="ts" setup></script>
 
-<script>
-export default {
-  name: 'App',
-};
-</script>
-
-<style>
+<style lang="less" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

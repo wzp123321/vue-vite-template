@@ -5,9 +5,6 @@ import { Common_IRequestConfig } from './api';
 //引入store
 import useInterceptorStore from '../../pinia/interceptor';
 
-const store = useInterceptorStore();
-// 解构store/user.ts中userInfo的信息,让数据变成响应式，这样就可以在组件中修改store中的数据
-
 /**
  * 添加请求头
  * @param config
@@ -42,6 +39,8 @@ export const addTimeOut = (config: InternalAxiosRequestConfig<Common_IRequestCon
  * @param message
  */
 export const checkAxiosPermission = (code: number, message: string) => {
+  const store = useInterceptorStore();
+  // 解构store/user.ts中userInfo的信息,让数据变成响应式，这样就可以在组件中修改store中的数据
   const { isTokenFailureFlag } = storeToRefs(store);
   if (FORBIDDEN_CODE === +code && !isTokenFailureFlag) {
     // Todo
