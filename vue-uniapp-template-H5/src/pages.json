@@ -1,44 +1,32 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+  "pages": [
+    {
+      "path": "pages/energy-consumption-scan/energy-consumption-scan",
+      "style": {
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
 		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		},
-		{
-			"path": "emsapp/energyManager",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		},
-		{
-			"path": "pages/log/log",
-			"style": {
-				"navigationBarTitleText": "log-app"
-			}
-		}
-	    ,{
-            "path" : "pages/charts/charts",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
-		// 隐藏导航栏
-		"navigationStyle": "custom",
-		"app-plus": {
-			"titleView": false,
-			"animationType": "slide-in-right",
-			"animationDuration": 300
-		}
-	}
+      "path": "pages/energy-analysis/energy-analysis",
+      "style": {
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "emsapp/energyManager",
+      "style": {}
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "能源管理",
+    "navigationBarBackgroundColor": "white",
+    "backgroundColor": "#F8F8F8",
+    "app-plus": {
+      "animationType": "slide-in-right",
+      "animationDuration": 300
+    }
+  }
 }

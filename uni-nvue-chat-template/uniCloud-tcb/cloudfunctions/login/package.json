@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "tcb-router": "^1.1.2",
-    "uni-id": "file:../common/uni-id"
-  }
-}

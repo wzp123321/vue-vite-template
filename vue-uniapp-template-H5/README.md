@@ -43,7 +43,7 @@ uni-ui
 |  		└─index.ts   store
 |  ├─uni_modules    uni-ui组件(需要用到的组件可以在uni插件库单独安装到目录下)
 |  ├─utils    工具方法
-|  		├─authoration.ts    重放工具方法
+|  		├─authorization.ts    重放工具方法
 |  		└─index.ts   公共工具方法
 |  		└─storage.ts   缓存工具方法
 ├───App.vue    应用配置，用来配置App全局样式以及监听应用生命周期

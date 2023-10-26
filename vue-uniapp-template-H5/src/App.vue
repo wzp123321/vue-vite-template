@@ -10,13 +10,11 @@ import { FSetStorageData } from './utils/storage';
 import { commonHttp } from './api/request';
 import {
 	SESSION_KEY_TIME_DIFF,
-	SESSION_KEY_LOGINNAME,
+	SESSION_KEY_LOGIN_NAME,
 	SESSION_KEY_TOKEN,
 	SESSION_KEY_TENANT_CODE,
 } from './config/session-key';
-
-// store
-const store = useStore();
+import { mapSystemInfo } from './utils';
 
 /**
  * 初始化，获取基础配置信息
@@ -30,10 +28,13 @@ const getBasicConfiguration = async () => {
 		FSetStorageData('energy-name', res.name);
 		if (res.loginInfo) {
 			const loginInfo = JSON.parse(res.loginInfo);
-			FSetStorageData(SESSION_KEY_LOGINNAME, loginInfo?.resultBody?.loginName);
+			FSetStorageData(SESSION_KEY_LOGIN_NAME, loginInfo?.resultBody?.loginName);
 		}
 	});
 };
+
+// store
+const store = useStore();
 /**
  * 查询系统时间
  */
@@ -41,7 +42,9 @@ const getSystemTime = async () => {
 	const res = await commonHttp.post('/common/system/time', {});
 	if (res) {
 		store.dispatch('setSystemTime', res?.data);
-		FSetStorageData(SESSION_KEY_TIME_DIFF, res?.data);
+		const dTimeValue = String(new Date(res?.data as string).getTime() - new Date().getTime());
+
+		FSetStorageData(SESSION_KEY_TIME_DIFF, dTimeValue);
 	}
 };
 
@@ -49,6 +52,9 @@ const getSystemTime = async () => {
  * 初始化获取用户信息
  */
 onLaunch(() => {
+	const { screenHeight, screenWidth, platform, navigationBarHeight, statusBarHeight } = mapSystemInfo();
+	console.log(screenHeight, screenWidth, platform, navigationBarHeight, statusBarHeight);
+
 	getBasicConfiguration();
 	getSystemTime();
 	uni.addInterceptor('navigateTo', {

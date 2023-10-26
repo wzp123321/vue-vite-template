@@ -4,22 +4,27 @@ import store from './store';
 // import router from './router/index';
 // 引入样式
 import '@tiansu/ts-mobile-package/dist/styles/index.css';
+import './assets/css/common.scss';
 // 注册全局组件
 import registerComponents from './core/registerComponents';
 import { FSetStorageData } from './utils/storage';
+// 注册指令
+import { registerDirectives } from './directives/index';
 
 export function createApp() {
-	if(process.env.NODE_ENV === 'development'){
-		FSetStorageData('energy-token', '72baa114acff4698aba79023a080b628142e62a833f67eea4a1066e0f3eda2091697684704656')
-		FSetStorageData('energy-loginName', 'wanzp')
-		FSetStorageData('energy-tenantCode', '700')
-	}
-	const app = createSSRApp(App);
-	registerComponents(app);
-	app.use(store);
-	// app.use(router);
+  // 开发环境
+  if (process.env.NODE_ENV === 'development') {
+    FSetStorageData('energy-token', 'b358217933ec46358258488426331cb1142e62a833f67eea4a1066e0f3eda2091698287049981');
+    FSetStorageData('energy-loginName', 'wanzp');
+    FSetStorageData('energy-tenantCode', '700');
+  }
+  const app = createSSRApp(App);
+  registerComponents(app);
+  registerDirectives(app);
+  app.use(store);
+  // app.use(router);
 
-	return {
-		app,
-	};
+  return {
+    app,
+  };
 }
