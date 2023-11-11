@@ -1,12 +1,18 @@
 import { defineConfig, loadEnv } from 'vite';
 import { resolve } from 'path';
 import uni from '@dcloudio/vite-plugin-uni';
+import requireTransform from 'vite-plugin-require-transform';
 
 // https://vitejs.dev/config/
 export default ({ mode, command }) =>
   defineConfig({
     base: './',
-    plugins: [uni()],
+    plugins: [
+      uni(),
+      requireTransform({
+        fileRegex: /.ts$|.tsx$|.vue$/,
+      }),
+    ],
     server: {
       port: 19527,
       proxy: {

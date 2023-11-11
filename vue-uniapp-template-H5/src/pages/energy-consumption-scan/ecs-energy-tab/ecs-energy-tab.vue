@@ -1,18 +1,22 @@
 <template>
-  <div
-    :class="['ecs-energy-tab', props.energyStickyFlag ? 'is-sticky' : '']"
-    :style="{ backgroundColor: props.navigatorStyle.backgroundColor }"
+  <view
+    :class="[
+      'ecs-energy-tab',
+      props.energyStickyFlag ? 'is-sticky' : '',
+      !props.energyStickyFlag && props.transparentFlag ? 'is-transparent' : '',
+    ]"
+    :style="{ top: props.energyStickyFlag ? mapTop() : '' }"
   >
     <view
       :class="[energyCode === item.code ? 'eet-item-selected' : '', 'eet-item']"
+      :style="{ height, lineHeight: height }"
       v-for="item in props.tabList"
       :key="item.code"
-      :style="{ color: props.navigatorStyle.color }"
       @click="handleSelect(item.code)"
     >
       {{ item.name }}
     </view>
-  </div>
+  </view>
 </template>
 <script lang="ts" setup>
 // 公共库
@@ -20,7 +24,8 @@ import { ref } from 'vue';
 import type { PropType } from 'vue';
 // 接口
 import type { Common_ICodeName } from '../../../api/model';
-import type { Ecs_INavigatorStyle } from '../energy-consumption-scan.api';
+// 工具方法
+import { pxToRpx } from '@/utils';
 // props
 const props = defineProps({
   // 能源类型列表
@@ -28,13 +33,10 @@ const props = defineProps({
     type: Array as PropType<Common_ICodeName<string>[]>,
     default: [],
   },
-  // 动态样式
-  navigatorStyle: {
-    type: Object as PropType<Ecs_INavigatorStyle>,
-    default: {
-      backgroundColor: 'transparent',
-      color: 'var(--tem-color-white)',
-    },
+  // 是否透明
+  transparentFlag: {
+    type: Boolean,
+    default: false,
   },
   // 当前能源类型
   selectedCode: {
@@ -46,9 +48,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // 高度
+  height: {
+    type: String,
+    default: '96rpx',
+  },
 });
 // emits
 const emits = defineEmits(['select']);
+/**
+ * 吸顶高度
+ * @returns {string}
+ */
+const mapTop = (): string => {
+  return `${pxToRpx('44')}rpx`;
+};
 // 当前能源类型
 const energyCode = ref<string>(props.selectedCode);
 /**
@@ -64,34 +78,33 @@ const handleSelect = (code: string): void => {
 <style lang="scss" scoped>
 .ecs-energy-tab {
   position: relative;
-  width: 100%;
   opacity: 1;
-  padding: 0 16px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   transition: none;
+  background-color: var(--tem-color-white);
 
   .eet-item {
     position: relative;
     font-size: var(--tem-font-size-b16);
-    color: var(--tem-color-white);
-    padding: 12px 0;
-    font-size: 16px;
-    line-height: 24px;
-    width: 75px;
+    color: var(--tem-text-color-primary);
+    font-size: 32rpx;
+    line-height: 48rpx;
+    width: 150rpx;
     text-align: center;
     transition: none;
 
     &.eet-item-selected {
       font-weight: 600;
+      color: var(--tem-color-primary);
 
       &::before {
         content: '';
-        width: 16px;
-        height: 3px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 1);
+        width: 32rpx;
+        height: 6rpx;
+        border-radius: 1998rpx;
+        background-color: var(--tem-color-primary);
 
         position: absolute;
         bottom: 0;
@@ -102,20 +115,28 @@ const handleSelect = (code: string): void => {
     }
   }
 
+  &.is-transparent {
+    background-color: transparent;
+
+    .eet-item {
+      color: var(--tem-color-white);
+
+      &.eet-item-selected {
+        &::before {
+          background: var(--tem-color-white);
+        }
+      }
+    }
+  }
+
   &.is-sticky {
     position: fixed;
     left: 0;
-    top: 44px;
+    // top: 88rpx;
+    // top: 44px;
     transition: none;
     z-index: 2;
-
-    .eet-item.eet-item-selected {
-      color: var(--tem-color-primary) !important;
-
-      &::before {
-        background-color: var(--tem-color-primary);
-      }
-    }
+    background-color: var(--tem-color-white);
   }
 }
 </style>

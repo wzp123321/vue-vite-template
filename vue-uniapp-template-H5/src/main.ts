@@ -3,13 +3,10 @@ import { createSSRApp } from 'vue';
 import store from './store';
 // import router from './router/index';
 // 引入样式
-import '@tiansu/ts-mobile-package/dist/styles/index.css';
 import './assets/css/common.scss';
 // 注册全局组件
 import registerComponents from './core/registerComponents';
 import { FSetStorageData } from './utils/storage';
-// 注册指令
-import { registerDirectives } from './directives/index';
 
 export function createApp() {
   // 开发环境
@@ -20,7 +17,6 @@ export function createApp() {
   }
   const app = createSSRApp(App);
   registerComponents(app);
-  registerDirectives(app);
   app.use(store);
   // app.use(router);
 

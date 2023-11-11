@@ -7,7 +7,7 @@
         "enablePullDownRefresh": false
       }
     },
-		{
+    {
       "path": "pages/energy-analysis/energy-analysis",
       "style": {
         "navigationStyle": "custom",
@@ -15,7 +15,39 @@
       }
     },
     {
+      "path": "pages/energy-analysis/ea-search/ea-search",
+      "style": {
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/energy-saving-assessment/quota-management/quota-management",
+      "style": {
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/energy-saving-assessment/energy-saving-assessment",
+      "style": {
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/energy-saving-assessment/esa-filter/esa-filter",
+      "style": {
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path": "emsapp/energyManager",
+      "style": {}
+    },
+    {
+      "path": "pages/demo/demo",
       "style": {}
     }
   ],
@@ -28,5 +60,10 @@
       "animationType": "slide-in-right",
       "animationDuration": 300
     }
+  },
+  "app-plus": {
+    // 2023-1031加
+    "softinputNavBar": "none",
+    "softinputMode": "adjustResize"
   }
 }

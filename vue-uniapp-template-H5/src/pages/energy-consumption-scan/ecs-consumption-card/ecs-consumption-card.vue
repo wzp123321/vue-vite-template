@@ -1,18 +1,22 @@
 <template>
-  <view :class="['ecs-consumption-card', props.energyStickyFlag ? 'is-sticky' : '']">
+  <view :class="['ecs-consumption-card', props.energyStickyFlag || !props.topLevelFlag ? 'is-sticky' : '']">
     <view class="ecc-container">
-      <!-- 数据 -->
-      <view class="ecc-container-header">
-        <text class="ecc-container-header-label">总能耗值(kgce)</text>
-        <text class="ecc-container-header-label">总成本(万元)</text>
-        <text class="ecc-container-header-value">{{
-          thousandSeparation(props.consumptionData.totalConsumptionValue)
-        }}</text>
-        <text class="ecc-container-header-value">{{ thousandSeparation(props.consumptionData.totalCostValue) }}</text>
-      </view>
+      <!-- 总能耗 -->
+      <ecc-total
+        v-if="!mapIsSubentry()"
+        :totalConsumptionValue="props.consumptionData?.totalConsumptionValue as number"
+        :totalCostValue="(props.consumptionData?.totalCostValue as number)"
+      ></ecc-total>
+      <!-- 分项 -->
+      <ecc-subitem
+        :totalConsumptionValue="props.consumptionData?.totalConsumptionValue as number"
+        :totalCostValue="props.consumptionData?.totalCostValue as number"
+        :percent="props.consumptionData?.percent"
+        v-else
+      ></ecc-subitem>
       <!-- 图表 -->
-      <view class="ecc-container-charts">
-        <qiun-data-charts type="pie" :opts="options" :chartData="chartData" />
+      <view class="ecc-container-charts" v-if="props.consumptionData.totalConsumptionValue !== null">
+        <qiun-data-charts type="pie" :opts="options" :chartData="chartData" :ontouch="false" :ontap="false" />
       </view>
     </view>
   </view>
@@ -23,12 +27,21 @@
 import { onLoad } from '@dcloudio/uni-app';
 import type { PropType } from 'vue';
 import { reactive } from 'vue';
-// 工具方法
-import { thousandSeparation } from '@/utils';
+// api
 import type { Ecs_IConsumptionData } from '../energy-consumption-scan.api';
-import { mapEnergyColorByCode } from '@/config/config';
+// 配置
+import { CHARTS_COLOR_GROUP, mapEnergyColorByCode } from '@/config/config';
+import { Common_EEnergyCode } from '@/config/enum';
+// 组件
+import EccTotal from './ecc-total/ecc-total.vue';
+import EccSubitem from './ecc-subitem/ecc-subitem.vue';
 // props
 const props = defineProps({
+  // 能源类型
+  energyCode: {
+    type: String,
+    default: '00000',
+  },
   // 数据
   consumptionData: {
     type: Object as PropType<Ecs_IConsumptionData>,
@@ -39,8 +52,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // 如果是非顶级节点
+  topLevelFlag: {
+    type: Boolean,
+    default: false,
+  },
 });
 
+/**
+ * 是否是分项
+ * @returns {boolean}
+ */
+const mapIsSubentry = (): boolean => {
+  return props.energyCode !== Common_EEnergyCode.总能耗;
+};
+// 数据源
 const chartData = reactive<any>({ series: [] });
 // 配置
 const options = reactive({
@@ -81,15 +107,19 @@ const getServerData = () => {
  */
 const mapOptions = () => {
   options.color =
-    (props.consumptionData.energyDataList?.map((item) => mapEnergyColorByCode(item.energyCode)) as any) ?? [];
+    (props.consumptionData.pieData?.map((item, index) => {
+      return props.energyCode === Common_EEnergyCode.总能耗
+        ? mapEnergyColorByCode(item.id)
+        : CHARTS_COLOR_GROUP[index % CHARTS_COLOR_GROUP.length];
+    }) as any) ?? [];
 };
 /**
  * 生成series数据
  */
 const mapSeriesData = () => {
   return (
-    props.consumptionData.energyDataList?.map((item) => ({
-      name: item.energyName,
+    props.consumptionData.pieData?.map((item) => ({
+      name: item.name,
       value: item.value,
       legendShape: 'rect',
     })) ?? []
@@ -104,53 +134,23 @@ onLoad(() => {
 <style lang="scss" scoped>
 .ecs-consumption-card {
   width: 100%;
-  height: 334px;
-  padding: 8px 16px 16px;
+  padding: 16rpx 32rpx 32rpx;
   box-sizing: border-box;
 
   .ecc-container {
-    border-radius: 8px;
+    border-radius: 16rpx;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.23) 0%, rgba(255, 255, 255, 1) 100%);
-    box-shadow: 4px 0px 20px rgba(0, 0, 0, 0.03);
-    backdrop-filter: blur(50px);
+    box-shadow: 8rpx 0px 40rpx rgba(0, 0, 0, 0.03);
+    backdrop-filter: blur(100rpx);
     overflow: hidden;
     box-sizing: border-box;
 
     transition: all 233ms;
-    padding: 16px;
-
-    .ecc-container-header {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 4px 12px;
-      margin-bottom: 24px;
-
-      .ecc-container-header-label,
-      .ecc-container-header-value {
-        display: inline-block;
-        font-size: var(--tem-font-size-b14);
-        text-align: center;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-
-      .ecc-container-header-label {
-        color: rgb(144, 147, 153);
-        line-height: 22px;
-      }
-
-      .ecc-container-header-value {
-        color: rgb(24, 25, 26);
-        font-size: 20px;
-        line-height: 20px;
-        font-weight: 700;
-      }
-    }
+    padding: 32rpx;
 
     .ecc-container-charts {
       width: 100%;
-      height: 208px;
+      height: 416rpx;
       overflow: hidden;
     }
   }

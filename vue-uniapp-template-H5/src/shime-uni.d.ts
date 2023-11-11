@@ -7,5 +7,4 @@ declare module '*.vue' {
   export default component;
 }
 
-declare module '@arco-iconbox/vue-tem'
-
+declare module '@arco-iconbox/vue-tem';

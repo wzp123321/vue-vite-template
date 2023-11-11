@@ -1,25 +1,31 @@
 # 一、开发说明
+
 ## 1.安装
+
 ```
 npm install
 ```
 
 ## 2.启动
+
 ```
 npm run dev:h5
 ```
 
 ## 3.打包
+
 ```
 npm run build:h5
 ```
 
 ## 4.组件
+
 ```
 uni-ui
 ```
 
 ## 5.目录结构说明
+
 ```
 ├─src    应用配置，用来配置App全局样式以及监听应用生命周期
 |  ├─api    http请求封装
@@ -34,7 +40,7 @@ uni-ui
 |  		├─enum.ts    枚举
 |  		├─request.ts     请求配置
 |  		├─session-key.ts    缓存key
-|  ├─core    核心功能    
+|  ├─core    核心功能
 |  		├─nativeBridge.ts    桥连接服务
 |  		└─registerComponents.ts   注册全局组件
 |  ├─pages    页面
@@ -63,4 +69,3 @@ uni-ui
 ├─tsconfig.json    typescript配置文件
 ├─vite.config.ts    vite配置文件
 ```
-

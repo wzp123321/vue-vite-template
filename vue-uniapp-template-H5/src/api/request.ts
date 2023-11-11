@@ -1,15 +1,15 @@
 // http请求全局配置、请求、响应拦截
 import Request, { type HttpRequestConfig, type HttpCustom, type HttpResponse } from 'luch-request';
 // 配置
+import { SESSION_KEY_LOGIN_NAME, SESSION_KEY_TOKEN, SESSION_KEY_TENANT_CODE } from '@/config/session-key';
 import { baseURL } from '@/config/request';
 // 工具方法
 import { FGetStorageData } from '@/utils/storage';
 import { FGetAuthorization } from '@/utils/authorization';
+// 接口
 import type { Common_IHttpResponseImpl, Common_IObject } from './model';
-import { SESSION_KEY_LOGIN_NAME, SESSION_KEY_TOKEN, SESSION_KEY_TENANT_CODE } from '@/config/session-key';
 
 // 节流接口列表
-const throttleRequestList = new Set();
 const throttleMap = new Map<string, Promise<any>>();
 
 const http = new Request();
@@ -62,7 +62,7 @@ http.interceptors.response.use(
   },
   (response) => {
     // 请求错误做点什么。可以使用async await 做异步操作
-    return Promise.reject(response);
+    throw response?.data;
   },
 );
 
@@ -75,7 +75,6 @@ const commonHttp = {
     // 如果需要做节流处理
     // if (!options?.custom!.throttleFlag || (options?.custom?.throttleFlag && !throttleMap.has(url))) {
     const res: Promise<Common_IHttpResponseImpl<T>> = http.post(url, params as any, options);
-    console.log('之前没有请求过，需要向map中存一份');
     throttleMap.set(url, res);
     return res;
     // }
