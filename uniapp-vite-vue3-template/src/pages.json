@@ -42,7 +42,12 @@
     },
     {
       "path": "pages/demo/demo",
-      "style": {}
+      "style": {
+        "enablePullDownRefresh": false,
+        "app-plus": {
+          "softinputMode": "adjustResize"
+        }
+      }
     }
   ],
   "globalStyle": {
