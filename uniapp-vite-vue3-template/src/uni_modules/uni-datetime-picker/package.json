@@ -1,19 +1,20 @@
 {
-  "id": "uni-icons",
-  "displayName": "uni-icons 图标",
-  "version": "2.0.12",
-  "description": "图标组件，用于展示移动端常见的图标，可自定义颜色、大小。",
+  "id": "uni-datetime-picker",
+  "displayName": "uni-datetime-picker 日期选择器",
+  "version": "2.2.42",
+  "description": "uni-datetime-picker 日期时间选择器，支持日历，支持范围选择",
   "keywords": [
+    "uni-datetime-picker",
     "uni-ui",
     "uniui",
-    "icon",
-    "图标"
+    "日期时间选择器",
+    "日期时间"
 ],
   "repository": "https://github.com/dcloudio/uni-ui",
   "engines": {
-    "HBuilderX": "^3.2.14",
-    "uni-app": "^4.08",
-    "uni-app-x": "^4.61"
+    "HBuilderX": "",
+    "uni-app": "^4.07",
+    "uni-app-x": ""
   },
   "directories": {
     "example": "../../temps/example_temps"
@@ -43,7 +44,8 @@
   },
   "uni_modules": {
     "dependencies": [
-      "uni-scss"
+      "uni-scss",
+      "uni-icons"
     ],
     "encrypt": [],
     "platforms": {
@@ -64,11 +66,8 @@
           },
           "app": {
             "vue": "√",
-            "nvue": "-",
-            "android": {
-                "extVersion": "",
-                "minVersion": "29"
-            },
+            "nvue": "√",
+            "android": "√",
             "ios": "√",
             "harmony": "√"
           },
@@ -90,19 +89,16 @@
         },
         "uni-app-x": {
           "web": {
-            "safari": "√",
-            "chrome": "√"
+            "safari": "-",
+            "chrome": "-"
           },
           "app": {
-            "android": {
-                "extVersion": "",
-                "minVersion": "29"
-            },
-            "ios": "√",
-            "harmony": "√"
+            "android": "-",
+            "ios": "-",
+            "harmony": "-"
           },
           "mp": {
-            "weixin": "√"
+            "weixin": "-"
           }
         }
       }
