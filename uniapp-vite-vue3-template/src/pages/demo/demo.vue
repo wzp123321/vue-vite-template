@@ -2,7 +2,14 @@
   <view class="demo">
     <view class="demo-header"><button>132131</button></view>
     <view class="demo-content">
-      <z-paging ref="zPagingRef" :refresher-only="true" :lower-threshold="'300rpx'" :fixed="false">
+      <z-paging
+        ref="zPagingRef"
+        :refresher-enable="true"
+        :load-more-enabled="true"
+        :to-bottom-loading-more-enabled="true"
+        :fixed="false"
+        @scrolltolower="handleScroll"
+      >
         <view class="uni-container">
           <uni-table ref="table" border stripe emptyText="暂无更多数据">
             <uni-tr class="table-header">
@@ -27,6 +34,11 @@
             </uni-tr>
           </uni-table>
         </view>
+        <template #bottom>
+          <view style="width: 100%; height: 20px; text-align: center">
+            {{ tableData.length === total ? '已经到底了' : loading ? '加载中...' : '加载更多数据' }}
+          </view>
+        </template>
       </z-paging>
     </view>
     <view class="demo-header"><button>132131</button></view>
@@ -34,11 +46,34 @@
 </template>
 
 <script lang="ts" setup>
-const tableData = Array.from({ length: 20 }).map((_, index) => ({
-  date: '2024-01-01',
-  name: '张三',
-  address: '北京市朝阳区芍药居',
-}));
+import { ref } from 'vue';
+
+const tableData = ref(
+  Array.from({ length: 20 }).map((_, index) => ({
+    date: index,
+    name: '张三',
+    address: '北京市朝阳区芍药居',
+  })),
+);
+
+const loading = ref(false);
+const total = ref(30);
+const handleScroll = () => {
+  if (!loading.value && tableData.value.length < total.value) {
+    loading.value = true;
+    setTimeout(() => {
+      tableData.value = [
+        ...tableData.value,
+        ...Array.from({ length: 5 }).map((_, index) => ({
+          date: index + tableData.value.length,
+          name: '张三',
+          address: '北京市朝阳区芍药居',
+        })),
+      ];
+      loading.value = false;
+    }, 1000);
+  }
+};
 </script>
 
 <style lang="scss">
@@ -53,9 +88,6 @@ const tableData = Array.from({ length: 20 }).map((_, index) => ({
     width: 100%;
     overflow: hidden;
     :deep(.z-paging-content) {
-      .zp-paging-container {
-        overflow: hidden;
-      }
       .zp-paging-container-content {
         height: 100%;
       }
